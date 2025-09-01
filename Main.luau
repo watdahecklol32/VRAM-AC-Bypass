@@ -170,8 +170,5 @@ hookfunction(player.Kick, newcclosure(@native function()
 	
 end));
 ]]);
-for _,v in getactorthreads() do
-	coroutine.yield(v);
-end;
 print("Done!");
 
