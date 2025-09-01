@@ -5,6 +5,8 @@
 	
 	Then getting bypassed by the most shittiest bypass ever :)
 ]]
+-- Author: WATDAHECKLOL32
+-- Date:   9/1/25
 local replicated_first = cloneref(game:GetService("ReplicatedFirst"));
 local actor = replicated_first:FindFirstChildOfClass("Actor");	
 local remotes = {};
@@ -171,4 +173,3 @@ hookfunction(player.Kick, newcclosure(@native function()
 end));
 ]]);
 print("Done!");
-
