@@ -82,7 +82,7 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 			return;
 		elseif method == "InvokeServer" and self.ClassName == "RemoteFunction" then
 			return;
-		elseif method == "IsA" and string.find(self.ClassName, "Body") and type(args[1]) == "string" and string.find(args[1], "Body") then 
+		elseif method == "IsA" and string.find(self.ClassName, "Body") or self.ClassName == "Hightlight" and type(args[1]) == "string" and string.find(args[1], "Body") or args[1] == "Highlight" then 
 			return false;
 		end;
 	end;
@@ -93,7 +93,7 @@ local hook; hook = hookfunction(game.IsA, newcclosure(function(...)
 	local args = {...};
 	local self = args[1];
 	table.remove(args, 1);
-	if type(self) == "userdata" and typeof(self) == "Instance" and string.find(self.ClassName, "Body") and args[1] and type(args[1]) == "string" and string.find(args[1], "Body") then
+	if type(self) == "userdata" and typeof(self) == "Instance" and string.find(self.ClassName, "Body") or self.ClassName == "Hightlight" and type(args[1]) == "string" and string.find(args[1], "Body") or args[1] == "Highlight" then
 		return false;
 	end;
 	return hook(...);
@@ -135,7 +135,7 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 			return coroutine.yield();
 		elseif method == "Kick" and compareinstances(self, player) then 
 			return coroutine.yield();
-		elseif method == "IsA" and string.find(self.ClassName, "Body") then 
+		elseif method == "IsA" and string.find(self.ClassName, "Body") or self.ClassName == "Hightlight" and type(args[1]) == "string" and string.find(args[1], "Body") or args[1] == "Highlight" then 
 			return false;
 		end;
 	end;
@@ -153,7 +153,7 @@ local hook; hook = hookfunction(game.IsA, newcclosure(function(...)
 	local args = {...};
 	local self = args[1];
 	table.remove(args, 1);
-	if type(self) == "userdata" and typeof(self) == "Instance" and string.find(self.ClassName, "Body") and args[1] and type(args[1]) == "string" and string.find(args[1], "Body") then
+	if type(self) == "userdata" and typeof(self) == "Instance" and string.find(self.ClassName, "Body") or self.ClassName == "Hightlight" and type(args[1]) == "string" and string.find(args[1], "Body") or args[1] == "Highlight" then
 		return false;
 	end;
 	return hook(...);
