@@ -29,18 +29,15 @@ local replicated_first = cloneref(game:GetService("ReplicatedFirst")) :: Replica
 local actor = cloneref(replicated_first:FindFirstChildOfClass("Actor")) :: Actor;
 
 local players = cloneref(game:GetService("Players")) :: Players;
-local player = cloneref(players.LocalPlayer) :: Player;
+local player = players.LocalPlayer :: Player;
 
 
 local char: Model & {[string]: any} = player.Character or player.CharacterAdded:Wait();
 local humanoid_root_part: Part = char.HumanoidRootPart;
-
-local hook; hook = hookfunction(task.delay, newcclosure(function(...)
-     if getthreadidentity() ~= 2 then return hook(...); end;
+hookfunction(task.delay, newcclosure(function(...)
 	return coroutine.yield();
 end));
-local hook; hook = hookfunction(xpcall, newcclosure(@native function(...: any): any
-	if getthreadidentity() ~= 2 then return hook(...); end;
+hookfunction(xpcall, newcclosure(@native function(...: any): any
 	return coroutine.yield();
 end));
 local bad: {[number]: RemoteEvent} = {};
@@ -56,6 +53,12 @@ local newindex; newindex = hookmetamethod(game, "__newindex", newcclosure(@nativ
 		return ;
 	end;
 	newindex(...);
+end));
+hookfunction(task.spawn, newcclosure(function(...)
+	return coroutine.yield();
+end));
+hookfunction(task.wait, newcclosure(function(...)
+	return coroutine.yield();
 end));
 local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@native function(...: any): any
 	if getthreadidentity() ~= 2 then return namecall(...); end;
@@ -83,12 +86,20 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 	end;
 	return namecall(...);
 end));
-hookfunction(player.Kick, newcclosure(@native function(): ()
-	return;
+local hook; hook = hookfunction(player.Kick, newcclosure(@native function(...): ()
+	if getthreadidentity() ~= 2 then return hook(...); end;
+	local args = {...};
+	local self = args[1];
+	if type(self) == "userdata" and typeof(self) == "Instance" and compareinstances(self, player) then return; end;
+	return hook(...);
 end));
 for _: unknown ,v: any in bad do
-	hookfunction(v.FireServer, newcclosure(@native function()
-		
+	local hook; hook = hookfunction(v.FireServer, newcclosure(@native function(...): ()
+		if getthreadidentity() ~= 2 then return hook(...); end;
+		local args = {...};
+		local self = args[1];
+		if type(self) == "userdata" and typeof(self) == "Instance" and self.ClassName == "RemoteEvent" and compareinstances(self, v) then return; end;
+		return hook(...);
 	end));
 end;
 ]]);
@@ -116,11 +127,20 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 	end;
 	return namecall(...);
 end));
-hookfunction(player.Kick, newcclosure(@native function(): ()
-	return;
+local hook; hook = hookfunction(player.Kick, newcclosure(@native function(...): ()
+	if getthreadidentity() ~= 2 then return hook(...); end;
+	local args = {...};
+	local self = args[1];
+	if type(self) == "userdata" and typeof(self) == "Instance" and compareinstances(self, player) then return; end;
+	return hook(...);
 end));
 for _: unknown ,v: any in bad do
-	hookfunction(v.FireServer, newcclosure(@native function(): ()
-		return;
+	local hook; hook = hookfunction(v.FireServer, newcclosure(@native function(...): ()
+		if getthreadidentity() ~= 2 then return hook(...); end;
+		local args = {...};
+		local self = args[1];
+		if type(self) == "userdata" and typeof(self) == "Instance" and self.ClassName == "RemoteEvent" and compareinstances(self, v) then return; end;
+		return hook(...);
 	end));
 end;
+warn("Bypass complete!");
