@@ -67,7 +67,7 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 		if method == "FireServer" and table.find(bad, self) and compareinstances(self, bad[table.find(bad, self)]) and args[1] and args[1] ~= "client"  then
 			warn("disallowed fireserver: ");
 			for i,v in args do
-				if type(v) == "table" or type(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and type(rawget(getrawmetatable(v), "__tostring")) == "function" and islclosure(rawget(getrawmetatable(v), "__tostring")) then
+				if type(v) == "table" or type(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and type(rawget(getrawmetatable(v), "__tostring")) == "function" and islclosure(rawget(getrawmetatable(v), "__tostring")) then -- nice one :3
 					hookmetamethod(v, "__tostring", newlclosure(function()
 						return "";
 					end));
@@ -102,7 +102,7 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 		if method == "FireServer" and table.find(bad, self) and compareinstances(self, bad[table.find(bad, self)]) and args[1] and args[1] ~= "client"  then
 			warn("disallowed fireserver: ");
 			for i,v in args do
-				if type(v) == "table" or type(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and type(rawget(getrawmetatable(v), "__tostring")) == "function" and islclosure(rawget(getrawmetatable(v), "__tostring")) then
+				if type(v) == "table" or type(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and type(rawget(getrawmetatable(v), "__tostring")) == "function" and islclosure(rawget(getrawmetatable(v), "__tostring")) then -- nice one :3
 					hookmetamethod(v, "__tostring", newlclosure(function()
 						return "";
 					end));
