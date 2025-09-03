@@ -6,170 +6,121 @@
 	Then getting bypassed by the most shittiest bypass ever :)
 ]]
 -- Author: WATDAHECKLOL32
--- Date:   9/1/25
-local replicated_first = cloneref(game:GetService("ReplicatedFirst"));
-local actor = replicated_first:FindFirstChildOfClass("Actor");	
-local remotes = {};
-for _,v in game:GetDescendants() do
-	if v:IsA("RemoteEvent") and tostring(v) == "VRAN" or tostring(v) == "ASYNC" then
-		table.insert(remotes, v);
-	end;
-end;
-local players = cloneref(game:GetService("Players"));
-local player = players.LocalPlayer :: Player;
-local char = player.Character;
-local humanoid = char.Humanoid;
-local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@native function(...)
-	if getthreadidentity() ~= 2 then return namecall(...); end;
-	local args = {...};
-	local method = getnamecallmethod();
-	local self = args[1];
-	table.remove(args, 1);
-	if self and type(self) == "userdata" and typeof(self) == "Instance" then
-		if self == player and method == "Kick" then 
-			return;
-		elseif method == "IsA" and type(args[1]) == "string" and string.find(args[1], "Body") or args[1] == "Highlight" then
-			return false;
-		elseif self == humanoid and method == "GetState" then
-			return Enum.HumanoidStateType.Running;
-		elseif table.find(remotes, self) and method == "FireServer" and args[1] and args[1] ~= "client" then
-			return;
-		end;
-	end;
-	return namecall(...);
-end));
-hookfunction(player.Kick, newcclosure(@native function()
+-- Date:   9/2/25
+local game = cloneref(game);
+local replicated_first = cloneref(game:GetService("ReplicatedFirst")) :: ReplicatedFirst;
+local actor = cloneref(replicated_first:FindFirstChildOfClass("Actor")) :: Actor;
 
-end));
-local hook; hook = hookfunction(task.wait, newcclosure(@native function(...: any): any
-	if getthreadidentity() ~= 2 then return hook(...); end;
-	local to_wait = ...;
-	if to_wait and type(to_wait) == "number" and to_wait == 0.1 then
-		return coroutine.yield();
-	end;
-	return hook(...);
-end));
-local hook; hook = hookfunction(task.delay, newcclosure(@native function(...: any): any
-	if getthreadidentity() ~= 2 then return hook(...); end;
-	local wait_time, closure = ...;
-	if type(wait_time) == "number" and type(closure) == "function" and wait_time == 3 then -- idc
-		return coroutine.yield();
-	end;
-	return hook(...);
-end));
-local hook; hook = hookfunction(getrenv().math.sqrt, newcclosure(@native function(...)
-	if getthreadidentity() ~= 2 then return hook(...); end;
-	return coroutine.yield();
-end));
-local hook; hook = hookfunction(warn, newcclosure(function(...)
-	if getthreadidentity() ~= 2 then return hook(...); end;
-	local args = {...};
-	for _,v in args do
-		if type(v) == "string" and string.lower(v):find("clie") then
-			return coroutine.yield();
-		end;
-	end;
-	return hook(...);
-end));
-run_on_actor(actor, [[
-local players = cloneref(game:GetService("Players"));
+local players = cloneref(game:GetService("Players")) :: Players;
 local player = players.LocalPlayer :: Player;
-local char = player.Character;
-local humanoid = char.Humanoid :: Humanoid;
-local hook; hook = hookfunction(task.wait, newcclosure(@native function(...: any): any
-	if getthreadidentity() ~= 2 then return hook(...); end;
-	local to_wait = ...;
-	if to_wait and type(to_wait) == "number" and to_wait == 0.1 then
-		return coroutine.yield();
+
+
+local char: Model & {[string]: any} = player.Character or player.CharacterAdded:Wait();
+local humanoid_root_part: Part = char.HumanoidRootPart;
+local bad: {[number]: RemoteEvent} = {};
+for _: unknown, v: Instance in game:GetDescendants() do
+	if v:IsA("RemoteEvent") and tostring(v) == "VRAN" or tostring(v) == "ASYNC" then
+		table.insert(bad, v);
 	end;
-	return hook(...);
+end;
+run_on_actor(actor, [[
+local game = cloneref(game);
+local replicated_first = cloneref(game:GetService("ReplicatedFirst")) :: ReplicatedFirst;
+local actor = cloneref(replicated_first:FindFirstChildOfClass("Actor")) :: Actor;
+
+local players = cloneref(game:GetService("Players")) :: Players;
+local player = cloneref(players.LocalPlayer) :: Player;
+
+
+local char: Model & {[string]: any} = player.Character or player.CharacterAdded:Wait();
+local humanoid_root_part: Part = char.HumanoidRootPart;
+
+local hook; hook = hookfunction(task.delay, newcclosure(function(...)
+     if getthreadidentity() ~= 2 then return hook(...); end;
+	return coroutine.yield();
 end));
-local hook; hook = hookfunction(task.delay, newcclosure(@native function(...: any): any
-	if getthreadidentity() ~= 2 then return hook(...); end;
-	local wait_time, closure = ...;
-	if type(wait_time) == "number" and type(closure) == "function" and wait_time == 3 then -- idc
-		return coroutine.yield();
-	end;
-	return hook(...);
-end));
-local hook; hook = hookfunction(getrenv().math.sqrt, newcclosure(@native function(...)
+local hook; hook = hookfunction(xpcall, newcclosure(@native function(...: any): any
 	if getthreadidentity() ~= 2 then return hook(...); end;
 	return coroutine.yield();
 end));
-local hook; hook = hookfunction(warn, newcclosure(function(...)
-	if getthreadidentity() ~= 2 then return hook(...); end;
-	local args = {...};
-	for _,v in args do
-		if type(v) == "string" and string.lower(v):find("clie") then
-			return coroutine.yield();
-		end;
-	end;
-	return hook(...);
-end))
-local __index; __index = hookmetamethod(game, "__index", newcclosure(@native function(...)
-	if getthreadidentity() ~= 2 then return __index(...); end;
-	local self, index = ...;
-	if type(self) == "userdata" and typeof(self) == "Instance" then
-		if self == humanoid and index == "WalkSpeed" then
-			return 15;
-		elseif self == humanoid and index == "JumpPower" then
-			return 7;
-		elseif self == humanoid and index == "MaxHealth" then
-			return 100;
-		elseif self == humanoid and index == "HumanoidStateType" then
-			return Enum.HumanoidStateType.Running;
-		end;
-	end;
-	return __index(...);
-end));
-local remotes = {};
-for _,v in game:GetDescendants() do
+local bad: {[number]: RemoteEvent} = {};
+for _: unknown, v: Instance in game:GetDescendants() do
 	if v:IsA("RemoteEvent") and tostring(v) == "VRAN" or tostring(v) == "ASYNC" then
-		table.insert(remotes, v);
+		table.insert(bad, v);
 	end;
 end;
-for _,v in getgc(true) do
-	if type(v) == "function" and islclosure(v) and #debug.getupvalues(v) < 0 then
-		local up_values = debug.getupvalues(v);
-		for _,aaa in up_values do
-			if table.find(remotes, aa) then
-				setrawmetatable(getfenv(v), {});
-				task.wait(1);
-				hookfunction(v, function() end);
-			end;
-		end;
+local newindex; newindex = hookmetamethod(game, "__newindex", newcclosure(@native function(...: any): ()
+	if getthreadidentity() ~= 2 then  newindex(...); end;
+	local self, index, value = ...;
+	if type(self) == "userdata" and type(index) == "string" and typeof(value) == "CFrame" and compareinstances(self, humanoid_root_part) and index == "CFrame" then
+		return ;
 	end;
-end;
-local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@native function(...)
+	newindex(...);
+end));
+local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@native function(...: any): any
 	if getthreadidentity() ~= 2 then return namecall(...); end;
-	local args = {...};
-	local method = getnamecallmethod();
-	local self = args[1];
+	local args: {any} = {...};
+	local self: Instance = args[1];
 	table.remove(args, 1);
-	if self and type(self) == "userdata" and typeof(self) == "Instance" then
-		if self == player and method == "Kick" then 
+	local method: string = getnamecallmethod();
+	if type(self) == "userdata" and typeof(self) == "Instance" then
+		if method == "FireServer" and table.find(bad, self) and compareinstances(self, bad[table.find(bad, self)]) and args[1] and args[1] ~= "client"  then
+			warn("disallowed fireserver: ");
+			for i,v in args do
+				if type(v) == "table" or type(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and type(rawget(getrawmetatable(v), "__tostring")) == "function" and islclosure(rawget(getrawmetatable(v), "__tostring")) then
+					hookmetamethod(v, "__tostring", newlclosure(function()
+						return "";
+					end));
+				end;
+				print(i,v);
+			end;
 			return;
-		elseif method == "IsA" and type(args[1]) == "string" and string.find(args[1], "Body") or args[1] == "Highlight" then
-			return false;
-		elseif self == humanoid and method == "GetState" then
-			return Enum.HumanoidStateType.Running;
-		elseif table.find(remotes, self) and method == "FireServer" and args[1] and args[1] ~= "client" then
+		elseif method == "Kick" and compareinstances(self, player) then 
+			return;
+		elseif method == "InvokeServer" and self.ClassName == "RemoteFunction" then
 			return;
 		end;
 	end;
 	return namecall(...);
 end));
-local hook; hook = hookfunction(warn, newcclosure(function(...)
-	local args = {...};
-	for _,v in args do
-		if type(v) == "string" and string.lower(v):find("clie") then
+hookfunction(player.Kick, newcclosure(@native function(): ()
+	return;
+end));
+for _: unknown ,v: any in bad do
+	hookfunction(v.FireServer, newcclosure(@native function()
+		
+	end));
+end;
+]]);
+local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@native function(...: any): any
+	if getthreadidentity() ~= 2 then return namecall(...); end;
+	local args: {any} = {...};
+	local self: Instance = args[1];
+	table.remove(args, 1);
+	local method: string = getnamecallmethod();
+	if type(self) == "userdata" and typeof(self) == "Instance" then
+		if method == "FireServer" and table.find(bad, self) and compareinstances(self, bad[table.find(bad, self)]) and args[1] and args[1] ~= "client"  then
+			warn("disallowed fireserver: ");
+			for i,v in args do
+				if type(v) == "table" or type(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and type(rawget(getrawmetatable(v), "__tostring")) == "function" and islclosure(rawget(getrawmetatable(v), "__tostring")) then
+					hookmetamethod(v, "__tostring", newlclosure(function()
+						return "";
+					end));
+				end;
+				print(i,v);
+			end;
+			return coroutine.yield();
+		elseif method == "Kick" and compareinstances(self, player) then 
 			return coroutine.yield();
 		end;
 	end;
-	return hook(...);
-end))
-hookfunction(player.Kick, newcclosure(@native function()
-	
+	return namecall(...);
 end));
-]]);
-print("Done!");
+hookfunction(player.Kick, newcclosure(@native function(): ()
+	return;
+end));
+for _: unknown ,v: any in bad do
+	hookfunction(v.FireServer, newcclosure(@native function(): ()
+		return;
+	end));
+end;
