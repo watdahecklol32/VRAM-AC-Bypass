@@ -7,15 +7,6 @@
 ]]
 -- Author: WATDAHECKLOL32
 -- Date:   9/2/25
---[[
-	How embarassing is this for you!
-	Imagine stealing code from adonis's anti cheat and claiming it as your own!
-	Then claim it as an unbypassable anti cheat and roblox's best!
-	
-	Then getting bypassed by the most shittiest bypass ever :)
-]]
--- Author: WATDAHECKLOL32
--- Date:   9/2/25
 local game = cloneref(game);
 
 local service = setmetatable({}, {
