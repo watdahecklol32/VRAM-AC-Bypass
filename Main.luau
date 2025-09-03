@@ -82,9 +82,21 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 			return;
 		elseif method == "InvokeServer" and self.ClassName == "RemoteFunction" then
 			return;
+		elseif method == "IsA" and string.find(self.ClassName, "Body") and type(args[1]) == "string" and string.find(args[1], "Body") then 
+			return false;
 		end;
 	end;
 	return namecall(...);
+end));
+local hook; hook = hookfunction(game.IsA, newcclosure(function(...)
+	if getthreadidentity() ~= 2 then return hook(...); end;
+	local args = {...};
+	local self = args[1];
+	table.remove(args, 1);
+	if type(self) == "userdata" and typeof(self) == "Instance" and string.find(self.ClassName, "Body") and args[1] and type(args[1]) == "string" and string.find(args[1], "Body") then
+		return false;
+	end;
+	return hook(...);
 end));
 local hook; hook = hookfunction(player.Kick, newcclosure(@native function(...): ()
 	if getthreadidentity() ~= 2 then return hook(...); end;
@@ -123,6 +135,8 @@ local namecall; namecall = hookmetamethod(game, "__namecall", newcclosure(@nativ
 			return coroutine.yield();
 		elseif method == "Kick" and compareinstances(self, player) then 
 			return coroutine.yield();
+		elseif method == "IsA" and string.find(self.ClassName, "Body") then 
+			return false;
 		end;
 	end;
 	return namecall(...);
@@ -132,6 +146,16 @@ local hook; hook = hookfunction(player.Kick, newcclosure(@native function(...): 
 	local args = {...};
 	local self = args[1];
 	if type(self) == "userdata" and typeof(self) == "Instance" and compareinstances(self, player) then return; end;
+	return hook(...);
+end));
+local hook; hook = hookfunction(game.IsA, newcclosure(function(...)
+	if getthreadidentity() ~= 2 then return hook(...); end;
+	local args = {...};
+	local self = args[1];
+	table.remove(args, 1);
+	if type(self) == "userdata" and typeof(self) == "Instance" and string.find(self.ClassName, "Body") and args[1] and type(args[1]) == "string" and string.find(args[1], "Body") then
+		return false;
+	end;
 	return hook(...);
 end));
 for _: unknown ,v: any in bad do
