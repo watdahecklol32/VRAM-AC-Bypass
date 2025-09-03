@@ -7,11 +7,32 @@
 ]]
 -- Author: WATDAHECKLOL32
 -- Date:   9/2/25
+--[[
+	How embarassing is this for you!
+	Imagine stealing code from adonis's anti cheat and claiming it as your own!
+	Then claim it as an unbypassable anti cheat and roblox's best!
+	
+	Then getting bypassed by the most shittiest bypass ever :)
+]]
+-- Author: WATDAHECKLOL32
+-- Date:   9/2/25
 local game = cloneref(game);
-local replicated_first = cloneref(game:GetService("ReplicatedFirst")) :: ReplicatedFirst;
+
+local service = setmetatable({}, {
+	__index = function(self, index)
+		local ref = cloneref(game:GetService(index));
+		rawset(self, index, ref);
+		return ref;
+	end,
+});
+
+local script_context = service.ScriptContext;
+local log_service = service.LogService;
+
+local replicated_first = service.ReplicatedFirst :: ReplicatedFirst;
 local actor = cloneref(replicated_first:FindFirstChildOfClass("Actor")) :: Actor;
 
-local players = cloneref(game:GetService("Players")) :: Players;
+local players = service.Players :: Players;
 local player = players.LocalPlayer :: Player;
 
 
@@ -166,5 +187,35 @@ for _: unknown ,v: any in bad do
 		if type(self) == "userdata" and typeof(self) == "Instance" and self.ClassName == "RemoteEvent" and compareinstances(self, v) then return; end;
 		return hook(...);
 	end));
+end;
+for _,v in getconnections(script_context.Error) do
+	v:Disable();
+end;
+for _,v in getconnections(log_service.MessageOut) do
+	v:Disable();
+end;
+for _,v in getgc(true) do
+	if type(v) == "table" and rawget(v, "getcustomasset") and rawget(v, "hookmetamethod") and rawget(v, "hookfunction") and not getrawmetatable(v) then
+		table.clear(v);
+	elseif type(v) == "userdata" and typeof(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and rawget(getrawmetatable(v), "__mod") then
+		for _,v in getrawmetatable(v) do
+			if type(v) == "function" then hookfunction(v, newlclosure(function() end)) end;
+		end;
+		setrawmetatable(v, {
+			__metatable = "The metatable is locked!";
+		});
+	end; 
+end;
+for _,v in getgc(false) do
+	if type(v) == "function" and islclosure(v) and #debug.getupvalues(v) == 7 then
+		local up_values = debug.getupvalues(v);
+		local task_delay = up_values[6];
+		local remote_event = up_values[3];
+		if type(task_delay) == "function" and debug.info(task_delay, "n") == "delay" and debug.info(task_delay, "s") == "[C]" and remote_event and typeof(remote_event) == "Instance" and remote_event.ClassName == "RemoteEvent" then
+			hookfunction(v, newlclosure(function(...)
+
+			end));
+		end;
+	end;   
 end;
 warn("Bypass complete!");
