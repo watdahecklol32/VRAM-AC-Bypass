@@ -189,8 +189,8 @@ for _,v in getgc(true) do
 	if type(v) == "table" and rawget(v, "getcustomasset") and rawget(v, "hookmetamethod") and rawget(v, "hookfunction") and not getrawmetatable(v) then
 		table.clear(v);
 	elseif type(v) == "userdata" and typeof(v) == "userdata" and getrawmetatable(v) and rawget(getrawmetatable(v), "__tostring") and rawget(getrawmetatable(v), "__mod") then
-		for _,v in getrawmetatable(v) do
-			if type(v) == "function" then hookfunction(v, newlclosure(function() end)) end;
+		for i,value in getrawmetatable(v) do
+			if type(value) == "function" then hookmetamethod(v, i, newlclosure(function() end)) end;
 		end;
 		setrawmetatable(v, {
 			__metatable = "The metatable is locked!";
