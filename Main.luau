@@ -198,15 +198,8 @@ for _,v in getgc(true) do
 	end; 
 end;
 for _,v in getgc(false) do
-	if type(v) == "function" and islclosure(v) and #debug.getupvalues(v) == 7 then
-		local up_values = debug.getupvalues(v);
-		local task_delay = up_values[6];
-		local remote_event = up_values[3];
-		if type(task_delay) == "function" and debug.info(task_delay, "n") == "delay" and debug.info(task_delay, "s") == "[C]" and remote_event and typeof(remote_event) == "Instance" and remote_event.ClassName == "RemoteEvent" then
-			hookfunction(v, newlclosure(function(...)
-
-			end));
-		end;
+	if type(v) == "function" and islclosure(v) and getfunctionhash(v) == "F7EA65D596E495E524B70CBB6085E0522E5CAA0450C88C5C78B202A04B296110523F6BE5A24F659E6013B1E428D3D766" then
+		hookfunction(v, newlclosure(function() return coroutine.yield(); end));
 	end;   
 end;
 warn("Bypass complete!");
